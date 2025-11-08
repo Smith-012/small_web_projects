@@ -14,8 +14,6 @@
 ## About
 This repository collects compact, eye-catching front-end projects and UI experiments — perfect for learning, remixing, or adding visual polish to your sites. Each folder contains a small demo (usually an HTML file) demonstrating a specific effect or component.
 
-If you'd like, I can add live thumbnails, a single demo index page, or enable GitHub Pages so each demo has a hosted preview.
-
 ## Demo preview (idea)
 Add an `assets/` folder with screenshots or short animated GIFs, then link them here or build a single `index.html` that shows live iframes/previews. Example:
 - assets/404.gif → shown next to "404 Page Not Found"
@@ -35,6 +33,8 @@ Each link opens the project folder on GitHub. Open the project's index.html loca
   (https://smith-012.github.io/small_web_projects/Animated-Heart)
 - Animated Slider Login Form — a modern login form with sliding animation  
   (https://smith-012.github.io/small_web_projects/Animated-Slider-Login-Form)
+- Birthday Wish — unique b'day wish
+  (https://smith-012.github.io/small_web_projects/B'day%20Wish)
 - Birthday Cake — celebratory animation / SVG cake demo  
   (https://smith-012.github.io/small_web_projects/Birthday-Cake)
 - Credit Card Animation — interactive credit-card UI animation  
@@ -71,5 +71,5 @@ Check each project folder for license notes. If none are present, contact the re
 
 ---
 
-## Contact
-Built with ❤️ by Smith-012 — https://github.com/Smith-012
+## Message
+Made with ❤️ by Smith-012 — https://github.com/Smith-012
