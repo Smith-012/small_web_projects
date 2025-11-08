@@ -36,37 +36,37 @@ Each link opens the project folder on GitHub. Open the project's index.html loca
 - 404 Page Not Found — a stylish 404/error page design  
   (https://smith-012.github.io/small_web_projects/404-Page-Not-Found)
 - Animated Heart — a CSS-based animated heart effect  
-  (https://smith-012.github.io/Smith-012/small_web_projects/Animated-Heart)
+  (https://smith-012.github.io/small_web_projects/Animated-Heart)
 - Animated Slider Login Form — a modern login form with sliding animation  
-  (https://smith-012.github.io/Smith-012/small_web_projects/Animated-Slider-Login-Form)
+  (https://smith-012.github.io/small_web_projects/Animated-Slider-Login-Form)
 - Birthday Cake — celebratory animation / SVG cake demo  
-  (https://smith-012.github.io/Smith-012/small_web_projects/Birthday-Cake)
+  (https://smith-012.github.io/small_web_projects/Birthday-Cake)
 - Credit Card Animation — interactive credit-card UI animation  
-  (https://smith-012.github.io/Smith-012/small_web_projects/Credit-Card-Animation)
+  (https://smith-012.github.io/small_web_projects/Credit-Card-Animation)
 - Fancy Loading Soup Animation — playful loading animation  
-  (https://smith-012.github.io/Smith-012/small_web_projects/Fancy-Loading-Soup-Animation)
+  (https://smith-012.github.io/small_web_projects/Fancy-Loading-Soup-Animation)
 - Funny Toogle Buttons — playful toggle/switch button styles  
-  (https://smith-012.github.io/Smith-012/small_web_projects/Funny-Toogle-Buttons)
+  (https://smith-012.github.io/small_web_projects/Funny-Toogle-Buttons)
 - Legend Login Form — clean, minimal login form with legend styling  
-  (https://smith-012.github.io/Smith-012/small_web_projects/Legend-Login-Form)
+  (https://smith-012.github.io/small_web_projects/Legend-Login-Form)
 - Light Navbar — lightweight and modern navigation bar  
-  (https://smith-012.github.io/Smith-012/small_web_projects/Light-Navbar)
+  (https://smith-012.github.io/small_web_projects/Light-Navbar)
 - Loading Animation Squidgame — themed loading animation inspired by Squid Game  
-  (https://smith-012.github.io/Smith-012/small_web_projects/Loading-Animation-Squidgame)
+  (https://smith-012.github.io/small_web_projects/Loading-Animation-Squidgame)
 - Loading Text animation — animated text loader  
-  (https://smith-012.github.io/Smith-012/small_web_projects/Loading-Text-animation)
+  (https://smith-012.github.io/small_web_projects/Loading-Text-animation)
 - Modern Animated Login Form Jump — animated login form with jump effect  
-  (https://smith-012.github.io/Smith-012/small_web_projects/Modern-Animated-Login-Form-Jump)
+  (https://smith-012.github.io/small_web_projects/Modern-Animated-Login-Form-Jump)
 - Navbar Navigation New Modern — contemporary multi-item navbar  
-  (https://smith-012.github.io/Smith-012/small_web_projects/Navbar-Navigation-New-Modern)
+  (https://smith-012.github.io/small_web_projects/Navbar-Navigation-New-Modern)
 - Navbar Navigation Old — an alternate classic navbar style  
-  (https://smith-012.github.io/Smith-012/small_web_projects/Navbar-Navigation-Old)
+  (https://smith-012.github.io/small_web_projects/Navbar-Navigation-Old)
 - Neon Buttons — neon-styled button set with glow effects  
-  (https://smith-012.github.io/Smith-012/small_web_projects/Neon-Buttons)
+  (https://smith-012.github.io/small_web_projects/Neon-Buttons)
 - Netflix Loading Animation — loader inspired by Netflix  
-  (https://smith-012.github.io/Smith-012/small_web_projects/Netflix-Loading-Animation)
+  (https://smith-012.github.io/small_web_projects/Netflix-Loading-Animation)
 - Social Media Hover Icons — animated icon hover effects for social links  
-  (https://smith-012.github.io/Smith-012/small_web_projects/Social-Media-Hover-Icons)
+  (https://smith-012.github.io/small_web_projects/Social-Media-Hover-Icons)
 
 ---
 
