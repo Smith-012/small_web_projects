@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday!</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden; /* Prevent scrollbars */
+      background-color: #111; /* Ensure consistent background */
+    }
+
+    canvas {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <script>
+    let w, h, ctx, hw, hh;
+    let letters = []; // Initialize letters globally
+    let opts, calc, Tau, TauQuarter; // Declare these globally
+
+    // Base URL for Twemoji images (using the 72x72 pixel version for good quality)
+    const TWEMOJI_BASE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/';
+
+    // Function to check if a character is likely an emoji
+    function isEmoji(char) {
+      const codePoint = char.codePointAt(0);
+      // Basic check for common emoji Unicode ranges and surrogate pairs
+      return (
+        (codePoint >= 0x1F600 && codePoint <= 0x1F64F) || // Emoticons
+        (codePoint >= 0x1F300 && codePoint <= 0x1F5FF) || // Miscellaneous Symbols and Pictographs
+        (codePoint >= 0x1F680 && codePoint <= 0x1F6FF) || // Transport and Map Symbols
+        (codePoint >= 0x2600 && codePoint <= 0x26FF) ||   // Miscellaneous Symbols
+        (codePoint >= 0x2700 && codePoint <= 0x27BF) ||   // Dingbats
+        (codePoint >= 0x1F900 && codePoint <= 0x1F9FF) || // Supplemental Symbols and Pictographs
+        (codePoint >= 0x1FA70 && codePoint <= 0x1FAFF) || // Symbols and Pictographs Extended-A
+        (char.length > 1 && char.codePointAt(1)) // Covers surrogate pairs for emojis
+      );
+    }
+
+    // Function to get Twemoji URL for an emoji
+    function getTwemojiUrl(emoji) {
+      // Convert emoji to its Unicode code point(s) in hexadecimal
+      // Filter out Variation Selector-16 (U+FE0F) as Twemoji CDN often doesn't use it in the filename
+      const codePoints = Array.from(emoji)
+        .map(char => char.codePointAt(0))
+        .filter(codePoint => codePoint !== 0xFE0F) // Crucial: Filter out Variation Selector-16
+        .map(codePoint => codePoint.toString(16))
+        .join('-'); // Join multiple code points for complex emojis
+      return `${TWEMOJI_BASE_URL}${codePoints}.png`;
+    }
+
+    // Function to initialize or re-initialize canvas and options
+    async function initializeCanvasAndOptions() {
+      const c = document.getElementById("c");
+      w = c.width = window.innerWidth;
+      h = c.height = window.innerHeight;
+      ctx = c.getContext("2d");
+      hw = w / 2;
+      hh = h / 2;
+
+      const minWidth = 320;
+      const maxWidth = 1200;
+      const currentWidth = Math.max(minWidth, Math.min(w, maxWidth));
+      const scaleFactor = currentWidth / 800;
+
+      opts = {
+        // --- CHANGE THE TEXT AND EMOJIS IN HERE! ---
+        strings: [" HAPPY", "B'DAY! 🥳 to You ✨"],
+
+        charSize: 30 * scaleFactor,
+        charSpacing: 5 * scaleFactor, // Adjusted charSpacing to be a smaller, additional gap
+        lineHeight: 40 * scaleFactor,
+
+        fireworkPrevPoints: 10,
+        fireworkBaseLineWidth: 5 * scaleFactor,
+        fireworkAddedLineWidth: 8 * scaleFactor,
+        fireworkSpawnTime: 200,
+        fireworkBaseReachTime: 30,
+        fireworkAddedReachTime: 30,
+        fireworkCircleBaseSize: 20 * scaleFactor,
+        fireworkCircleAddedSize: 10 * scaleFactor,
+        fireworkCircleBaseTime: 30,
+        fireworkCircleAddedTime: 30,
+        fireworkCircleFadeBaseTime: 10,
+        fireworkCircleFadeAddedTime: 5,
+        fireworkBaseShards: 5,
+        fireworkAddedShards: 5,
+        fireworkShardPrevPoints: 3,
+        fireworkShardBaseVel: 4 * scaleFactor,
+        fireworkShardAddedVel: 2 * scaleFactor,
+        fireworkShardBaseSize: 3 * scaleFactor,
+        fireworkShardAddedSize: 3 * scaleFactor,
+        gravity: 0.1 * scaleFactor,
+        upFlow: -0.1 * scaleFactor,
+
+        letterContemplatingWaitTime: 360,
+        balloonSpawnTime: 20,
+        balloonBaseInflateTime: 10,
+        balloonAddedInflateTime: 10,
+        balloonBaseSize: 20 * scaleFactor,
+        balloonAddedSize: 20 * scaleFactor,
+        balloonBaseVel: 0.4 * scaleFactor,
+        balloonAddedVel: 0.4 * scaleFactor,
+        balloonBaseRadian: -(Math.PI / 2 - 0.5),
+        balloonAddedRadian: -1
+      };
+
+      Tau = Math.PI * 2;
+      TauQuarter = Tau / 4;
+
+      // Set a generic font for text, as emojis will be images
+      ctx.font = `${opts.charSize}px Verdana, sans-serif`;
+
+      letters = [];
+      let totalTextHeight = opts.strings.length * opts.lineHeight;
+      const imageLoadPromises = [];
+
+      for (let i = 0; i < opts.strings.length; ++i) {
+        let currentLineCharacters = opts.strings[i];
+        let charInfoArray = []; // Store type, char, and calculated width
+
+        // First pass: Determine character types and their widths
+        for (const char of Array.from(currentLineCharacters)) { // Use Array.from for correct emoji splitting
+          if (isEmoji(char)) {
+            const img = new Image();
+            img.src = getTwemojiUrl(char);
+            img.onerror = () => {
+                console.error(`Failed to load emoji image: ${img.src}`);
+                // Fallback: if image fails, render as text (might still be unsupported by system font)
+                charInfoArray.push({ type: 'text', char: char, width: ctx.measureText(char).width });
+            };
+            const promise = new Promise(resolve => {
+              img.onload = () => {
+                // Emojis will always occupy opts.charSize width for layout consistency
+                charInfoArray.push({ type: 'emoji', char: char, img: img, width: opts.charSize });
+                resolve();
+              };
+            });
+            imageLoadPromises.push(promise);
+          } else {
+            // For text, use actual measured width for more natural spacing
+            charInfoArray.push({ type: 'text', char: char, width: ctx.measureText(char).width });
+          }
+        }
+
+        // Wait for all images in the current line to load before calculating total width
+        await Promise.all(imageLoadPromises);
+
+        let currentLineTotalWidth = 0;
+        // Second pass: Calculate total line width based on actual char widths + charSpacing
+        for (let j = 0; j < charInfoArray.length; ++j) {
+          currentLineTotalWidth += charInfoArray[j].width;
+          if (j < charInfoArray.length - 1) {
+            currentLineTotalWidth += opts.charSpacing;
+          }
+        }
+
+        // Calculate the starting X for the current line to center it relative to (0,0) after translation
+        const lineStartX = -currentLineTotalWidth / 2;
+
+        let accumulatedCharWidth = 0; // Tracks the total width of characters processed so far on the line
+        for (let j = 0; j < charInfoArray.length; ++j) {
+          const charInfo = charInfoArray[j];
+          const char = charInfo.char;
+          const charActualWidth = charInfo.width; // This is the actual measured width or opts.charSize for emojis
+
+          // charX is the center of the current character's position on the line
+          const charX = lineStartX + accumulatedCharWidth + charActualWidth / 2;
+          // charY is the vertical center of the line
+          const charY = i * opts.lineHeight - totalTextHeight / 2 + opts.lineHeight / 2;
+
+          letters.push(
+            new Letter(
+              char,
+              charX,
+              charY,
+              charInfo.type,
+              charInfo.img
+            )
+          );
+          accumulatedCharWidth += charActualWidth + opts.charSpacing;
+        }
+      }
+    }
+
+    function Letter(char, x, y, type, img = null) {
+      this.char = char;
+      this.x = x; // This is now the center X of the character's bounding box
+      this.y = y; // This is now the center Y of the character's bounding box
+      this.type = type;
+      this.img = img;
+
+      this.fireworkDy = this.y; // Vertical distance from center for firework arc
+
+      // The hue calculation relies on x, which is now relative to the center of the text block.
+      var hue = (x / (opts.charSpacing * Math.max(...opts.strings.map(s => Array.from(s).length)))) * 360;
+      this.color = "hsl(hue,80%,50%)".replace("hue", hue);
+      this.lightAlphaColor = "hsla(hue,80%,light%,alp)".replace("hue", hue);
+      this.lightColor = "hsl(hue,80%,light%)".replace("hue", hue);
+      this.alphaColor = "hsla(hue,80%,50%,alp)".replace("hue", hue);
+
+      this.reset();
+    }
+
+    Letter.prototype.reset = function () {
+      this.phase = "firework";
+      this.tick = 0;
+      this.spawned = false;
+      this.spawningTime = (opts.fireworkSpawnTime * Math.random()) | 0;
+      this.reachTime =
+        (opts.fireworkBaseReachTime + opts.fireworkAddedReachTime * Math.random()) |
+        0;
+      this.lineWidth =
+        opts.fireworkBaseLineWidth + opts.fireworkAddedLineWidth * Math.random();
+      this.prevPoints = [[0, hh, 0]]; // Firework starts from bottom center of the translated canvas
+    };
+
+    Letter.prototype.step = function () {
+      if (this.phase === "firework") {
+        if (!this.spawned) {
+          ++this.tick;
+          if (this.tick >= this.spawningTime) {
+            this.tick = 0;
+            this.spawned = true;
+          }
+        } else {
+          ++this.tick;
+          var linearProportion = this.tick / this.reachTime,
+            armonicProportion = Math.sin(linearProportion * TauQuarter),
+            x = linearProportion * this.x, // Move towards letter's X
+            y = hh + armonicProportion * this.fireworkDy; // Arc towards letter's Y
+
+          if (this.prevPoints.length > opts.fireworkPrevPoints)
+            this.prevPoints.shift();
+          this.prevPoints.push([x, y, linearProportion * this.lineWidth]);
+
+          var lineWidthProportion = 1 / (this.prevPoints.length - 1);
+          for (var i = 1; i < this.prevPoints.length; ++i) {
+            var point = this.prevPoints[i],
+              point2 = this.prevPoints[i - 1];
+
+            ctx.strokeStyle = this.alphaColor.replace(
+              "alp",
+              i / this.prevPoints.length
+            );
+            ctx.lineWidth = point[2] * lineWidthProportion * i;
+            ctx.beginPath();
+            ctx.moveTo(point[0], point[1]);
+            ctx.lineTo(point2[0], point2[1]);
+            ctx.stroke();
+          }
+
+          if (this.tick >= this.reachTime) {
+            this.phase = "contemplate";
+            this.circleFinalSize =
+              opts.fireworkCircleBaseSize +
+              opts.fireworkCircleAddedSize * Math.random();
+            this.circleCompleteTime =
+              (opts.fireworkCircleBaseTime +
+                opts.fireworkCircleAddedTime * Math.random()) |
+              0;
+            this.circleCreating = true;
+            this.circleFading = false;
+            this.circleFadeTime =
+              (opts.fireworkCircleFadeBaseTime +
+                opts.fireworkCircleFadeAddedTime * Math.random()) |
+              0;
+            this.tick = 0;
+            this.tick2 = 0;
+            this.shards = [];
+
+            var shardCount =
+                (opts.fireworkBaseShards +
+                  opts.fireworkAddedShards * Math.random()) |
+                0,
+              angle = Tau / shardCount,
+              cos = Math.cos(angle),
+              sin = Math.sin(angle),
+              x = 1,
+              y = 0;
+
+            for (var i = 0; i < shardCount; ++i) {
+              var x1 = x;
+              x = x * cos - y * sin;
+              y = y * cos + x1 * sin;
+              this.shards.push(new Shard(this.x, this.y, x, y, this.alphaColor));
+            }
+          }
+        }
+      } else if (this.phase === "contemplate") {
+        ++this.tick;
+        if (this.circleCreating) {
+          ++this.tick2;
+          var proportion = this.tick2 / this.circleCompleteTime,
+            armonic = -Math.cos(proportion * Math.PI) / 2 + 0.5;
+
+          ctx.beginPath();
+          ctx.fillStyle = this.lightAlphaColor
+            .replace("light", 50 + 50 * proportion)
+            .replace("alp", proportion);
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, armonic * this.circleFinalSize, 0, Tau);
+          ctx.fill();
+
+          if (this.tick2 > this.circleCompleteTime) {
+            this.tick2 = 0;
+            this.circleCreating = false;
+            this.circleFading = true;
+          }
+        } else if (this.circleFading) {
+          // Draw text or emoji image, centered at this.x, this.y
+          if (this.type === 'text') {
+            ctx.fillStyle = this.lightColor.replace("light", 70);
+            ctx.textAlign = 'center'; // Center text horizontally
+            ctx.textBaseline = 'middle'; // Center text vertically
+            ctx.fillText(this.char, this.x, this.y);
+          } else if (this.type === 'emoji' && this.img && this.img.complete) {
+            ctx.drawImage(this.img, this.x - opts.charSize / 2, this.y - opts.charSize / 2, opts.charSize, opts.charSize);
+          }
+
+          ++this.tick2;
+          var proportion = this.tick2 / this.circleFadeTime,
+            armonic = -Math.cos(proportion * Math.PI) / 2 + 0.5;
+
+          ctx.beginPath();
+          ctx.fillStyle = this.lightAlphaColor
+            .replace("light", 100)
+            .replace("alp", 1 - armonic);
+          ctx.arc(this.x, this.y, this.circleFinalSize, 0, Tau);
+          ctx.fill();
+
+          if (this.tick2 >= this.circleFadeTime) this.circleFading = false;
+        } else {
+          // Draw text or emoji image, centered at this.x, this.y
+          if (this.type === 'text') {
+            ctx.fillStyle = this.lightColor.replace("light", 70);
+            ctx.textAlign = 'center'; // Center text horizontally
+            ctx.textBaseline = 'middle'; // Center text vertically
+            ctx.fillText(this.char, this.x, this.y);
+          } else if (this.type === 'emoji' && this.img && this.img.complete) {
+            ctx.drawImage(this.img, this.x - opts.charSize / 2, this.y - opts.charSize / 2, opts.charSize, opts.charSize);
+          }
+        }
+
+        for (var i = 0; i < this.shards.length; ++i) {
+          this.shards[i].step();
+          if (!this.shards[i].alive) {
+            this.shards.splice(i, 1);
+            --i;
+          }
+        }
+
+        if (this.tick > opts.letterContemplatingWaitTime) {
+          this.phase = "balloon";
+          this.tick = 0;
+          this.spawning = true;
+          this.spawnTime = (opts.balloonSpawnTime * Math.random()) | 0;
+          this.inflating = false;
+          this.inflateTime =
+            (opts.balloonBaseInflateTime +
+              opts.balloonAddedInflateTime * Math.random()) |
+            0;
+          this.size =
+            (opts.balloonBaseSize + opts.balloonAddedSize * Math.random()) | 0;
+          var rad =
+              opts.balloonBaseRadian + opts.balloonAddedRadian * Math.random(),
+            vel = opts.balloonBaseVel + opts.balloonAddedVel * Math.random();
+          this.vx = Math.cos(rad) * vel;
+          this.vy = Math.sin(rad) * vel;
+        }
+      } else if (this.phase === "balloon") {
+        ctx.strokeStyle = this.lightColor.replace("light", 80);
+        if (this.spawning) {
+          ++this.tick;
+          // Draw text or emoji image, centered at this.x, this.y
+          if (this.type === 'text') {
+            ctx.fillStyle = this.lightColor.replace("light", 70);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(this.char, this.x, this.y);
+          } else if (this.type === 'emoji' && this.img && this.img.complete) {
+            ctx.drawImage(this.img, this.x - opts.charSize / 2, this.y - opts.charSize / 2, opts.charSize, opts.charSize);
+          }
+          if (this.tick >= this.spawnTime) {
+            this.tick = 0;
+            this.spawning = false;
+            this.inflating = true;
+          }
+        } else if (this.inflating) {
+          ++this.tick;
+          var proportion = this.tick / this.inflateTime,
+            x = (this.cx = this.x),
+            y = (this.cy = this.y - this.size * proportion);
+
+          ctx.fillStyle = this.alphaColor.replace("alp", proportion);
+          ctx.beginPath();
+          generateBalloonPath(x, y, this.size * proportion);
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x, this.y);
+          ctx.stroke();
+
+          // Draw text or emoji image, centered at this.x, this.y
+          if (this.type === 'text') {
+            ctx.fillStyle = this.lightColor.replace("light", 70);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(this.char, this.x, this.y);
+          } else if (this.type === 'emoji' && this.img && this.img.complete) {
+            ctx.drawImage(this.img, this.x - opts.charSize / 2, this.y - opts.charSize / 2, opts.charSize, opts.charSize);
+          }
+
+          if (this.tick >= this.inflateTime) {
+            this.tick = 0;
+            this.inflating = false;
+          }
+        } else {
+          this.cx += this.vx;
+          this.cy += this.vy += opts.upFlow;
+
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+          generateBalloonPath(this.cx, this.cy, this.size);
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.moveTo(this.cx, this.cy);
+          ctx.lineTo(this.cx, this.cy + this.size);
+          ctx.stroke();
+
+          // Draw text or emoji image, centered at this.cx, this.cy + this.size
+          if (this.type === 'text') {
+            ctx.fillStyle = this.lightColor.replace("light", 70);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(this.char, this.cx, this.cy + this.size);
+          } else if (this.type === 'emoji' && this.img && this.img.complete) {
+            ctx.drawImage(this.img, this.cx - opts.charSize / 2, (this.cy + this.size) - opts.charSize / 2, opts.charSize, opts.charSize);
+          }
+
+          if (this.cy + this.size < -hh || this.cx < -hw || this.cy > hw)
+            this.phase = "done";
+        }
+      }
+    };
+
+    function Shard(x, y, vx, vy, color) {
+      var vel =
+        opts.fireworkShardBaseVel + opts.fireworkShardAddedVel * Math.random();
+      this.vx = vx * vel;
+      this.vy = vy * vel;
+      this.x = x;
+      this.y = y;
+      this.prevPoints = [[x, y]];
+      this.color = color;
+      this.alive = true;
+      this.size =
+        opts.fireworkShardBaseSize + opts.fireworkShardAddedSize * Math.random();
+    }
+
+    Shard.prototype.step = function () {
+      this.x += this.vx;
+      this.y += this.vy += opts.gravity;
+
+      if (this.prevPoints.length > opts.fireworkShardPrevPoints)
+        this.prevPoints.shift();
+      this.prevPoints.push([this.x, this.y]);
+
+      var lineWidthProportion = this.size / this.prevPoints.length;
+      for (var k = 0; k < this.prevPoints.length - 1; ++k) { // Changed 'i' to 'k' here
+        var point = this.prevPoints[k],
+          point2 = this.prevPoints[k + 1];
+
+        ctx.strokeStyle = this.color.replace("alp", k / this.prevPoints.length);
+        ctx.lineWidth = point[2] * lineWidthProportion * k; // Fixed: Use 'k' instead of 'i'
+        ctx.beginPath();
+        ctx.moveTo(point[0], point[1]);
+        ctx.lineTo(point2[0], point2[1]);
+        ctx.stroke();
+      }
+
+      if (this.prevPoints[0][1] > hh) this.alive = false;
+    };
+
+    function generateBalloonPath(x, y, size) {
+      ctx.moveTo(x, y);
+      ctx.bezierCurveTo(
+        x - size / 2,
+        y - size / 2,
+        x - size / 4,
+        y - size,
+        x,
+        y - size
+      );
+      ctx.bezierCurveTo(x + size / 4, y - size, x + size / 2, y - size / 2, x, y);
+    }
+
+    function anim() {
+      window.requestAnimationFrame(anim);
+
+      ctx.fillStyle = "#111";
+      ctx.fillRect(0, 0, w, h);
+
+      // Translate the canvas to its center before drawing letters and fireworks
+      ctx.translate(hw, hh);
+
+      var done = true;
+      for (var l = 0; l < letters.length; ++l) {
+        letters[l].step();
+        if (letters[l].phase !== "done") done = false;
+      }
+
+      // Translate the canvas back to its original position
+      ctx.translate(-hw, -hh);
+
+      if (done) {
+        for (var l = 0; l < letters.length; ++l) {
+          letters[l].reset();
+        }
+      }
+    }
+
+    // Initial setup
+    window.onload = async function() {
+      await initializeCanvasAndOptions();
+      anim();
+    };
+
+    window.addEventListener("resize", async function () {
+      await initializeCanvasAndOptions();
+    });
+  </script>
+</body>
+</html>
