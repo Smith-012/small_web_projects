@@ -33,7 +33,7 @@ Each link opens the project folder on GitHub. Open the project's index.html loca
   (https://smith-012.github.io/small_web_projects/Animated-Heart)
 - Animated Slider Login Form — a modern login form with sliding animation  
   (https://smith-012.github.io/small_web_projects/Animated-Slider-Login-Form)
-- Birthday Wish — unique b'day wish
+- B'day Wish — unique b'day animation  
   (https://smith-012.github.io/small_web_projects/B'day%20Wish)
 - Birthday Cake — celebratory animation / SVG cake demo  
   (https://smith-012.github.io/small_web_projects/Birthday-Cake)
