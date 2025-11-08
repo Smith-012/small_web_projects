@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Projects-17-blue?style=for-the-badge" alt="projects" />
+  <img src="https://img.shields.io/badge/Projects-18-blue?style=for-the-badge" alt="projects" />
   <img src="https://img.shields.io/badge/Languages-HTML%2FCSS%2FJS-orange?style=for-the-badge" alt="languages" />
   <img src="https://img.shields.io/github/stars/Smith-012/small_web_projects?style=for-the-badge" alt="stars" />
   <img src="https://img.shields.io/badge/License-See%20Repo-lightgrey?style=for-the-badge" alt="license" />
@@ -34,7 +34,7 @@ Add an `assets/` folder with screenshots or short animated GIFs, then link them 
 Each link opens the project folder on GitHub. Open the project's index.html locally to preview.
 
 - 404 Page Not Found — a stylish 404/error page design  
-  https://github.com/Smith-012/small_web_projects/404-Page-Not-Found
+  (https://smith-012.github.io/small_web_projects/404-Page-Not-Found/)
 - Animated Heart — a CSS-based animated heart effect  
   https://github.com/Smith-012/small_web_projects/tree/main/Animated%20Heart
 - Animated Slider Login Form — a modern login form with sliding animation  
