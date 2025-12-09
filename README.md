@@ -1,4 +1,4 @@
----
+# web_projects
 <p align="center">
   <a href="https://github.com/Smith-012"><strong>Smith-012</strong></a> • small front-end experiments & UI snippets
 </p>
