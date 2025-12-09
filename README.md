@@ -15,11 +15,6 @@
 ## About
 This repository collects compact, eye-catching front-end projects and UI experiments — perfect for learning, remixing, or adding visual polish to your sites. Each folder contains a small demo (usually an HTML file) demonstrating a specific effect or component.
 
-## Demo preview (idea)
-Add an `assets/` folder with screenshots or short animated GIFs, then link them here or build a single `index.html` that shows live iframes/previews. Example:
-- assets/404.gif → shown next to "404 Page Not Found"
-- assets/neon-buttons.gif → shown next to "Neon Buttons"
-
 ## Table of contents
 - Projects
 - License & credits
