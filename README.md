@@ -62,10 +62,16 @@ Each link opens the project folder on GitHub. Open the project's index.html loca
 
 ---
 
-## License & attribution
-Check each project folder for license notes. If none are present, contact the repo owner (https://github.com/Smith-012) for reuse permissions.
+## License
+
+This project is licensed under the **GNU GPL-3.0 License**.<br>
+See the [LICENSE](LICENSE) file for details.<br>
+Contact the repo owner (https://github.com/Smith-012) for reuse permissions.
 
 ---
 
-## Message
+<p align="center">
 Made with ❤️ by Smith-012 — https://github.com/Smith-012
+</p>
+
+---
