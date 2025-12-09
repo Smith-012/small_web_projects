@@ -15,6 +15,8 @@
 ## About
 This repository collects compact, eye-catching front-end projects and UI experiments — perfect for learning, remixing, or adding visual polish to your sites. Each folder contains a small demo (usually an HTML file) demonstrating a specific effect or component.
 
+---
+
 ## Projects (click to open folder)
 Each link opens the project folder on GitHub. Open the project's index.html locally to preview.
 
