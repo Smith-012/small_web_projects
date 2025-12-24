@@ -36,7 +36,7 @@ Each link opens the project folder on GitHub. Open the project's index.html loca
   (https://smith-012.github.io/small_web_projects/Fancy-Loading-Soup-Animation)
 - Funny Toogle Buttons — playful toggle/switch button styles  
   (https://smith-012.github.io/small_web_projects/Funny-Toogle-Buttons)
-- Happy New Year — playful toggle/switch button styles  
+- Happy New Year — festive New Year celebration animation  
   (https://smith-012.github.io/small_web_projects/Happy-New-Year)
 - Legend Login Form — clean, minimal login form with legend styling  
   (https://smith-012.github.io/small_web_projects/Legend-Login-Form)
@@ -58,14 +58,6 @@ Each link opens the project folder on GitHub. Open the project's index.html loca
   (https://smith-012.github.io/small_web_projects/Netflix-Loading-Animation)
 - Social Media Hover Icons — animated icon hover effects for social links  
   (https://smith-012.github.io/small_web_projects/Social-Media-Hover-Icons)
-
----
-
-## License
-
-This project is licensed under the **GNU GPL-3.0 License**.<br>
-See the [LICENSE](LICENSE) file for details.<br>
-Contact the repo owner (https://github.com/Smith-012) for reuse permissions.
 
 ---
 
