@@ -5,9 +5,9 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Projects-18-blue?style=for-the-badge" alt="projects" />
+  <img src="https://img.shields.io/badge/Projects-19-blue?style=for-the-badge" alt="projects" />
   <img src="https://img.shields.io/badge/Languages-HTML%2FCSS%2FJS-orange?style=for-the-badge" alt="languages" />
-  <img src="https://img.shields.io/github/stars/Smith-012/small_web_projects?style=for-the-badge" alt="stars" />
+  <img src="https://img.shields.io/github/stars/Smith-012/small_web_projects?style=for-the-badge&v=1" alt="stars" />
 </p>
 
 ---
