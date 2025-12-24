@@ -36,6 +36,8 @@ Each link opens the project folder on GitHub. Open the project's index.html loca
   (https://smith-012.github.io/small_web_projects/Fancy-Loading-Soup-Animation)
 - Funny Toogle Buttons — playful toggle/switch button styles  
   (https://smith-012.github.io/small_web_projects/Funny-Toogle-Buttons)
+- Happy New Year — playful toggle/switch button styles  
+  (https://smith-012.github.io/small_web_projects/Happy-New-Year)
 - Legend Login Form — clean, minimal login form with legend styling  
   (https://smith-012.github.io/small_web_projects/Legend-Login-Form)
 - Light Navbar — lightweight and modern navigation bar  
