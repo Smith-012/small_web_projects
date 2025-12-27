@@ -48,6 +48,8 @@ Each link opens the project folder on GitHub. Open the project's index.html loca
   (https://smith-012.github.io/small_web_projects/Loading-Text-animation)
 - Modern Animated Login Form Jump — animated login form with jump effect  
   (https://smith-012.github.io/small_web_projects/Modern-Animated-Login-Form-Jump)
+- Musical Birthday Wish — musical birthday wish with text jump effect  
+  (https://smith-012.github.io/small_web_projects/Musical-Birthday-Wish)
 - Navbar Navigation New Modern — contemporary multi-item navbar  
   (https://smith-012.github.io/small_web_projects/Navbar-Navigation-New-Modern)
 - Navbar Navigation Old — an alternate classic navbar style  
