@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Projects-20-blue?style=for-the-badge" alt="projects" />
+  <img src="https://img.shields.io/badge/Projects-21-blue?style=for-the-badge" alt="projects" />
   <img src="https://img.shields.io/badge/Languages-HTML%2FCSS%2FJS-orange?style=for-the-badge" alt="languages" />
   <img src="https://img.shields.io/github/stars/Smith-012/small_web_projects?style=for-the-badge&v=1" alt="stars" />
 </p>
@@ -36,6 +36,8 @@ Each link opens the project folder on GitHub. Open the project's index.html loca
   (https://smith-012.github.io/small_web_projects/Fancy-Loading-Soup-Animation)
 - Funny Toogle Buttons — playful toggle/switch button styles  
   (https://smith-012.github.io/small_web_projects/Funny-Toogle-Buttons)
+- Happy Birthday — developer style b'day wish  
+  (https://smith-012.github.io/small_web_projects/Happy-Birthday)
 - Happy New Year — festive New Year celebration animation  
   (https://smith-012.github.io/small_web_projects/Happy-New-Year)
 - Legend Login Form — clean, minimal login form with legend styling  
